@@ -1,5 +1,5 @@
 # BACKEND TEMPLATE
-## A simple backend end template as my project starter
+## A simple backend template as my project starter
 #### This eliminates the process involved in installing different packages at the start of every projects
 
 >_Just running the simple code snippet below gets me started_
