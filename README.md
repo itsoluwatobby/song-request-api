@@ -25,7 +25,8 @@ ___
 - nodemon
 ___
 **Configurations setup**
-* [x] Configuration for mongoose already done
-* [x] Basic express server setup done
+* [x] Configuration for mongoose
+* [x] CORS configuration setup
+* [x] Basic express server setup
 * [x] Required middlewares included
 * [x] mvc design pattern already setup
