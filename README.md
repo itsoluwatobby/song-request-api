@@ -1,32 +1,20 @@
-# BACKEND TEMPLATE
-## A simple backend template as my project starter
-#### This eliminates the process involved in installing different packages at the start of every projects
+# SONG REACTION REQUEST API
+> ### A song reaction request website API. This is a reaction request Api, where users can make a request on the song they wish the content creator to make a reaction to.
 
->_Just running the simple code snippet below gets me started_
-```javascript
-npm install
-```
-___
-**Packages installed includes**
-- morgan
-- express
-- jsonwebtoken
-- express-async-handler
-- bcrypt
-- mongoose
-- helmet
-- cors
-- cookie-parser
-- date-fns
-- dotenv
-- nodemailer
 ---
-**Dev dependencies includes**
-- nodemon
-___
-**Configurations setup**
-* [x] Configuration for mongoose
-* [x] CORS configuration setup
-* [x] Basic express server setup
-* [x] Required middlewares included
-* [x] mvc design pattern already setup
+
+>_Javascript_ (**NODE.JS**)
+
+**_FEATURES_**
+* [x] register new user by email
+* [x] create a song request
+* [x] Edit a song request
+* [x] get all song requests with user details
+* [x] Delete a song request
+* [x] Vote/unVote for a made request
+
+---
+
+> *image preview*
+
+![image preview](./public/snippet.png "page preview")

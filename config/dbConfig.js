@@ -7,4 +7,4 @@ const dbConfig = asyncHandler( async() => {
    })
 })
 
-module.exports = dbConfig;
+module.exports = dbConfig
