@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const requestSchema = new mongoose.Schema(
   {
     userId: {type: mongoose.Schema.Types.ObjectId, required: true, ref:'users'},
+    email: {type: String, required: true},
     requestTitle: {type: String},
     requestLink: {type: String},
     requestDate: {type: String},

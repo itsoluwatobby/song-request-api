@@ -7,26 +7,28 @@ const {sub} = require('date-fns')
 exports.newUser = asyncHandler(async(req, res) => {
   const {email} = req.body
   if(!email) return res.status(400).json('email required')
+
   const duplicate = await Users.findOne({email}).exec()
-  if(duplicate) return res.status(409).json('email already taken')
+  if(duplicate) return res.status(200).json(duplicate)
   const user = await Users.create({email})
   res.status(200).json(user)
 })
 
 exports.newRequest = asyncHandler(async(req, res) => {
   const {userId} = req.params
-  const {requestTitle, requestLink} = req.body
-  if(!requestTitle) return res.status(400).json('fields cannot be empty')
+  const request = req.body
+  console.log(request)
+  if(!userId) return res.status(400).json('id required')
 
   const targetUser = await Users.findById(userId).exec()
   if(!targetUser) return res.status(403).json('user not found')
 
-  const duplicate = await Request.findOne({requestTitle}).exec()
+  const duplicate = await Request.findOne({requestTitle: request?.requestTitle}).exec()
   if(duplicate) return res.status(409).json('Title already taken')
 
   const dateTime = sub(new Date(), {minutes: 0}).toISOString()
   const songRequest = await Request.create({
-    userId, requestTitle, requestTitle, requestDate: dateTime
+    userId, email: request?.email, requestTitle: request?.requestTitle, requestLink: request?.requestLink, requestDate: dateTime
   })
   res.status(201).json(songRequest)
 })
@@ -38,7 +40,7 @@ exports.editRequest = asyncHandler(async(req, res) => {
   if(!userId) return res.status(400).json('id required')
 
   const user = await Users.findById(userId).exec()
-  if(!user) return res.status(409).json('user not found')
+  if(!user) return res.status(403).json('user not found')
 
   const targetRequest = await Request.findById(editRequest?.id).exec()
   if(!targetRequest) return res.status(403).json('request not found')
@@ -61,21 +63,21 @@ exports.deleteRequest = asyncHandler(async(req, res) => {
 
   const request = await Request.findById(requestId).exec()
   if(!request) return res.status(403).json('request not found')
-  if(!targetUser?._id.equals(request?.userId)) return res.status(401).json('unauthorised')
+
+  if(targetUser?.admin) await request.deleteOne()
+
+  else if(!targetUser?._id.equals(request?.userId)) return res.status(401).json('unauthorised')
   
-  await request.deleteOne()
+  else if(targetUser?._id.equals(request?.userId)) {
+    await request.deleteOne()
+  }
   res.sendStatus(204)
 })
 
 exports.getAllRequest = asyncHandler(async(req, res) => {
   const requests = await Request.find().lean()
   if(!requests?.length) return res.status(400).json('no request available')
-  
-  let userRequests = []
-  const users = await Promise.all(requests.map(request => Users.findById(request?.userId)))
-  await users.map(user => userRequests.push(user))
-
-  res.status(200).json({requests, users:userRequests})
+  res.status(200).json(requests)
 })
 
 //vote for/against a request
