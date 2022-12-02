@@ -17,7 +17,6 @@ exports.newUser = asyncHandler(async(req, res) => {
 exports.newRequest = asyncHandler(async(req, res) => {
   const {userId} = req.params
   const request = req.body
-  console.log(request)
   if(!userId) return res.status(400).json('id required')
 
   const targetUser = await Users.findById(userId).exec()
