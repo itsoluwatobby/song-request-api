@@ -7,7 +7,8 @@ const requestSchema = new mongoose.Schema(
     requestTitle: {type: String},
     requestLink: {type: String},
     requestDate: {type: String},
-    upVote: {type: Array, default: []}
+    upVote: {type: Array, default: []},
+    completed: {type: Boolean, default: false},
   },
   {minimize: false},
   {timestamps: true}

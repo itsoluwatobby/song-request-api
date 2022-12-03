@@ -6,12 +6,14 @@
 >_Javascript_ (**NODE.JS**)
 
 **_FEATURES_**
-* [x] register new user by email
-* [x] create a song request
+* [x] Register new user by email
+* [x] Create a song request
 * [x] Edit a song request
-* [x] get all song requests with user details
-* [x] Delete a song request
-* [x] Vote/unVote for a made request
+* [x] Get all song requests with user details
+* [x] Get all completed song requests
+* [x] Delete a song request by _USER_ or _ADMIN_
+* [x] _Vote_/_unVote_ for a made request
+* [x] _Complete_/_unComplete_ a made request
 
 ---
 

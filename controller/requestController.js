@@ -43,8 +43,13 @@ exports.editRequest = asyncHandler(async(req, res) => {
 
   const targetRequest = await Request.findById(editRequest?.id).exec()
   if(!targetRequest) return res.status(403).json('request not found')
+
+  if(user.admin){
+    const dateTime = sub(new Date(), {minutes: 0}).toISOString()
+    await targetRequest.updateOne({$set: {...editRequest, requestDate: dateTime}})
+  }
   
-  if(!targetRequest?.userId.equals(user?._id)) return res.status(401).json('unauthorised')
+  else if(!targetRequest?.userId.equals(user?._id)) return res.status(401).json('unauthorised')
   const dateTime = sub(new Date(), {minutes: 0}).toISOString()
   await targetRequest.updateOne({$set: {...editRequest, requestDate: dateTime}})
 
@@ -73,8 +78,16 @@ exports.deleteRequest = asyncHandler(async(req, res) => {
   res.sendStatus(204)
 })
 
+//get all reactions
 exports.getAllRequest = asyncHandler(async(req, res) => {
   const requests = await Request.find().lean()
+  if(!requests?.length) return res.status(400).json('no request available')
+  res.status(200).json(requests)
+})
+
+//get completed reactions
+exports.getCompletedRequest = asyncHandler(async(req, res) => {
+  const requests = await Request.find({completed: true}).lean()
   if(!requests?.length) return res.status(400).json('no request available')
   res.status(200).json(requests)
 })
@@ -97,5 +110,27 @@ exports.voteRequest = asyncHandler(async(req, res) => {
   else{
     await targetRequest.updateOne({$pull: {upVote: user._id}})
     return res.status(201).json('you unvoted this request')
+  }
+})
+
+//complete a request
+exports.completeRequest = asyncHandler(async(req, res) => {
+  const {adminId, requestId} = req.params
+  if(!adminId) return res.status(400).json('id required')
+
+  const targetRequest = await Request.findById(requestId).exec()
+  if(!targetRequest) return res.status(403).json('request not found')
+
+  const user = await Users.findById(adminId).exec()
+  if(!user) return res.status(403).json('user not found')
+  if(!user?.admin) return res.status(401).json('unauthorised')
+
+  if(!targetRequest?.completed){
+    await targetRequest.updateOne({$set: {completed: true}})
+    return res.status(201).json('request completed')
+  }
+  else{
+    await targetRequest.updateOne({$set: {completed: false}})
+    return res.status(201).json('request uncompleted')
   }
 })
