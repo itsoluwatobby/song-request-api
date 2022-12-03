@@ -12,8 +12,8 @@
 * [x] Get all song requests with user details
 * [x] Get all completed song requests
 * [x] Delete a song request by _USER_ or _ADMIN_
-* [x] _Vote_/_unVote_ for a made request
-* [x] _Complete_/_unComplete_ a made request
+* [x] Toggle _vote_ for a made request
+* [x] Toggle _completed_ a made request
 
 ---
 
