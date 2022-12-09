@@ -5,12 +5,15 @@ const {sub} = require('date-fns')
 
 //make request
 exports.newUser = asyncHandler(async(req, res) => {
-  const {email} = req.body
-  if(!email) return res.status(400).json('email required')
+  const {emailAddress} = req.body
+  if(!emailAddress) return res.status(400).json('email required')
 
-  const duplicate = await Users.findOne({email}).exec()
-  if(duplicate) return res.status(200).json(duplicate)
-  const user = await Users.create({email})
+  const duplicate = await Users.findOne({email: emailAddress}).exec()
+  if(duplicate) {
+    const {email} = duplicate._doc
+    return res.status(200).json(email)
+  }
+  const user = await Users.create({ email: emailAddress })
   res.status(200).json(user)
 })
 
@@ -31,6 +34,14 @@ exports.newRequest = asyncHandler(async(req, res) => {
   })
   res.status(201).json(songRequest)
 })
+
+//getUser
+exports.getUser = asyncHandler(async(req, res) => {{
+  const {email} = req.params
+  const targetUser = await Users.findOne({email}).exec()
+  if(!targetUser) return res.status(403).json('user not found')
+  res.status(200).json(targetUser)
+}})
 
 //edit request
 exports.editRequest = asyncHandler(async(req, res) => {
