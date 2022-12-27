@@ -14,7 +14,8 @@ exports.newUser = asyncHandler(async(req, res) => {
     return res.status(200).json(email)
   }
   const user = await Users.create({ email: emailAddress })
-  res.status(200).json(user)
+  const {email} = user._doc
+  res.status(200).json(email)
 })
 
 exports.newRequest = asyncHandler(async(req, res) => {
